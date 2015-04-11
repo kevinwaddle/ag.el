@@ -102,14 +102,6 @@ If set to nil, fall back to finding VCS root directories."
   "Face for ag matches."
   :group 'ag)
 
-(defface ag-success-face '((t :inherit success))
-  "Face for successful runs."
-  :group 'ag)
-
-(defface ag-failure-face '((t :inherit error))
-  "Face for errors that occur."
-  :group 'ag)
-
 (defmacro ag/with-patch-function (fun-name fun-args fun-body &rest body)
   "Temporarily override the definition of FUN-NAME whilst BODY is executed.
 
@@ -126,14 +118,6 @@ Assumes FUNCTION is already defined (see http://emacs.stackexchange.com/a/3452/3
   "Face for dired links in ag."
   :group 'ag )
 
-
-(defface ag-totals-face
-  '((((class color) (background light))
-     :foreground "firebrick")
-    (((class color) (background dark))
-     :foreground "tomato"))
-  "Face for search totals."
-  :group 'ag)
 
 (defvar-local ag/start-time nil)
 
