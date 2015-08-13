@@ -420,9 +420,12 @@ If called with a prefix, prompts for flags to pass to ag."
                      (ag/read-file-type)))
   (apply 'ag/search string (ag/project-root default-directory) file-type))
 
-(defun ag/read-from-minibuffer (prompt)
+(defun ag/read-from-minibuffer (prompt &optional escape-pcre-default-p)
   "Read a value from the minibuffer with PROMPT.
-If there's a string at point, offer that as a default."
+If there's a string at point, offer that as a default.
+
+If the optional escape-pcre-default-p parameter is provided,
+and no user-input is provided, send the default through ag/escape-pcre."
   (let* ((suggested (ag/dwim-at-point))
          (final-prompt
           (if suggested
@@ -437,7 +440,9 @@ If there's a string at point, offer that as a default."
     ;; the input was empty.
     (if (> (length user-input) 0)
         user-input
-      suggested)))
+      (if escape-pcre-default-p
+          (ag/escape-pcre suggested)
+        suggested))))
 
 ;;;###autoload
 (defun ag-project-regexp (regexp)
@@ -446,7 +451,7 @@ for the given regexp. The regexp should be in PCRE syntax, not
 Emacs regexp syntax.
 
 If called with a prefix, prompts for flags to pass to ag."
-  (interactive (list (ag/escape-pcre (ag/read-from-minibuffer "Search regexp"))))
+  (interactive (list (ag/read-from-minibuffer "Search regexp" t)))
   (ag/search regexp (ag/project-root default-directory) :regexp t))
 
 (autoload 'symbol-at-point "thingatpt")
